@@ -1,0 +1,8 @@
+run ./
+open cd 
+goback cd..
+create touch 
+newfolder mkdir 
+delete rm 
+delfolder rmdir 
+clear clear
