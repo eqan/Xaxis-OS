@@ -2,6 +2,7 @@
 #include<sys/wait.h>
 #include<iostream>
 #include<string>
+#include<cstring>
 #include<fstream>
 #include<vector>
 #include<pthread.h>
@@ -28,10 +29,12 @@ int main(){
     readspecs();
     readCommands();
     while(!userLogin());
+    std::cin.ignore();
     
     while(1){
         std::cout<<"root@root-xaxis:";
-        std::cin>>userin;
+        std::cin.ignore(-1);
+        std::getline(std::cin,userin);
         if(pthread_create(&last_thread_id,NULL,processCommand,NULL)){
             std::cout<<"Thread Creation Failed, Couldn't Process Command.\n";
         }
@@ -81,29 +84,56 @@ bool userLogin(){
     std::cin>>input;
     if(!pwd.compare(input)){
         std::cout<<"\n\tSuccessfully Logged In.\n";
-        sleep(2);
+        //sleep(2);
         system("clear");
         return true;
     }
     return false;
 }
+
+// * Replaces Our OS Command With Bash Command
 void* processCommand(void* args){
     std::string arg;
-    char* comm=new char[15];
-    for(int i=0;userin[i]!=' ' || userin[i]!='\0';i++){
-        if(userin[i]=='\0'){
+    char* comm=new char[25];
+
+    int i=0;
+    int k=0;
+    for(i;userin[i]!=' ' || userin[i]!='\0';i++){
+        if(userin[i]=='\0'){ //Command With No Argument
             comm[i]='\0';
             std::string toCompare(comm);
             for(int j=0;j<count;j++){
                 if(!toCompare.compare(commands[j].key)){
-                    std::cout<<commands[j].value<<std::endl;
+                    system(commands[j].value.c_str());
                     pthread_exit(NULL);
                 }
             }
-            system(comm);
+            std::cout<<userin<<": is not a command in here..\n";
+            pthread_exit(NULL);
+        }
+        if(userin[i]==' ')break;
+        comm[i]=userin[i];
+    }
+    //----
+    comm[i++]='\0';
+    std::string toCompare(comm);
+    for(int j=0;j<count;j++){
+        if(!toCompare.compare(commands[j].key)){
+            for(k=0;k<commands[j].value.length();k++){
+                comm[k]=commands[j].value[k];
+            }
+            if(commands[j].key.compare("run")){
+                comm[k++]=' ';
+            }
+            for(i;userin[i]!='\0';i++,k++){
+                comm[k]=userin[i];
+            }
             break;
         }
-        comm[i]=userin[i];
+    }
+    if(!k){std::cout<<userin<<": Try Rechecking The Command.\n";}
+    else{
+        system(comm);
     }
     pthread_exit(NULL);
 }
