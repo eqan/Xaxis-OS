@@ -28,19 +28,11 @@ void* processCommand(void* args);
 void creatingProcess(char* arg);
 // * -------
 
-
 int main(){
-    fork();
-    fork();
-    fork();
-    while(1){
-        
-    }
     readspecs();
     readCommands();
     while(!userLogin());
     std::cin.ignore();
-    
     while(1){
         std::cout<<"root@root-xaxis:";
         std::cin.ignore(-1);
@@ -49,6 +41,7 @@ int main(){
             std::cout<<"Thread Creation Failed, Couldn't Process Command.\n";
         }
         pthread_join(last_thread_id,NULL);
+        usleep(10000);
     }
 }
 
@@ -178,13 +171,13 @@ void* processCommand(void* args){
     if(!k){std::cout<<userin<<": Try Rechecking The Command.\n";}
     else{
         if(comm[0]=='.'){
-            std::cout<<"RUNNING NEW PROCESS:";
+            //std::cout<<"RUNNING NEW PROCESS: "<<std::endl;
             creatingProcess(comm);
             return NULL; 
         }
         else{
             if(comm[0]=='c' && comm[1]=='d'){
-                std::cout<<chdir(&comm[3]);
+                chdir(&comm[3]);
             }else{
                 system(comm);
             }
@@ -214,6 +207,5 @@ void creatingProcess(char* arg){
             std::cout << processes[i] << " ";
         }
     }
-    exit(0);
     return;
 }
