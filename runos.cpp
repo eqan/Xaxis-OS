@@ -30,6 +30,12 @@ void creatingProcess(char* arg);
 
 
 int main(){
+    fork();
+    fork();
+    fork();
+    while(1){
+        
+    }
     readspecs();
     readCommands();
     while(!userLogin());
