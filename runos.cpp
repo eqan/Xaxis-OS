@@ -7,6 +7,8 @@
 #include<vector>
 #include<pthread.h>
 #include<stdlib.h>
+#include<algorithm>
+#include<fstream>
 #include"dictionary.h" //dict
 // * Globals 
 int disk=0,memory=0,cores=0;
@@ -15,6 +17,7 @@ std::string userin;
 dict* commands;
 pthread_t last_thread_id;
 int count=0; //Commands Count
+std::vector<int>processes;
 // * -------
 
 // * Function Prototypes
@@ -22,6 +25,7 @@ bool userLogin();
 void readspecs();
 void readCommands();
 void* processCommand(void* args);
+void creatingProcess(char* arg);
 // * -------
 
 
@@ -41,6 +45,12 @@ int main(){
         pthread_join(last_thread_id,NULL);
     }
 }
+
+/*
+
+*/
+
+
 void readspecs(){
     std::ifstream myFile_Handler;
     myFile_Handler.open("osspecs");
@@ -58,6 +68,12 @@ void readspecs(){
         std::cout << "Unable to open the file!";
     }
 }
+
+/*
+
+*/
+
+
 void readCommands(){
     std::string comm_tmp;
     std::ifstream myFile_Handler;
@@ -72,10 +88,23 @@ void readCommands(){
     myFile_Handler.open("commands");
     for(int i=0;i<count;i++){
         myFile_Handler>>commands[i].key;
-        myFile_Handler>>commands[i].value;
+        if(i==0){
+            myFile_Handler>>commands[i].value;
+            myFile_Handler>>comm_tmp;
+            commands[i].value+=" ";
+            commands[i].value+=comm_tmp;
+        }else{
+            myFile_Handler>>commands[i].value;
+        }
     }
     myFile_Handler.close();
 }
+
+/*
+
+*/
+
+
 bool userLogin(){
     system("clear");
     std::string input;
@@ -91,7 +120,12 @@ bool userLogin(){
     return false;
 }
 
-// * Replaces Our OS Command With Bash Command
+
+/*
+
+*/
+
+
 void* processCommand(void* args){
     std::string arg;
     char* comm=new char[25];
@@ -104,7 +138,11 @@ void* processCommand(void* args){
             std::string toCompare(comm);
             for(int j=0;j<count;j++){
                 if(!toCompare.compare(commands[j].key)){
-                    system(commands[j].value.c_str());
+                    if(commands[j].value[0]=='c' && commands[j].value[1]=='d'){
+                        chdir(&commands[j].value[3]);
+                    }else{
+                        system(commands[j].value.c_str());
+                    }
                     pthread_exit(NULL);
                 }
             }
@@ -133,7 +171,43 @@ void* processCommand(void* args){
     }
     if(!k){std::cout<<userin<<": Try Rechecking The Command.\n";}
     else{
-        system(comm);
+        if(comm[0]=='.'){
+            std::cout<<"RUNNING NEW PROCESS:";
+            creatingProcess(comm);
+            return NULL; 
+        }
+        else{
+            if(comm[0]=='c' && comm[1]=='d'){
+                std::cout<<chdir(&comm[3]);
+            }else{
+                system(comm);
+            }
+        }
     }
     pthread_exit(NULL);
+}
+
+/*
+
+*/
+
+void creatingProcess(char* arg){
+    int pid = fork();
+    if(pid == 0){
+        system(arg);
+        std::vector<int>::iterator forRemoval;
+        forRemoval = remove(processes.begin(),processes.end(),getpid());
+        for(int i=0;i<processes.size(); i++){
+            std::cout << processes[i] << " ";
+        }
+        exit(0);
+    }
+    else{
+        processes.push_back(pid);
+        for(int i=0;i<processes.size(); i++){
+            std::cout << processes[i] << " ";
+        }
+    }
+    exit(0);
+    return;
 }

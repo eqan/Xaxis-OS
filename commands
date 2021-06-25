@@ -1,6 +1,6 @@
+goback cd ..
 run ./
 open cd 
-goback cd.. 
 create touch 
 newfolder mkdir 
 delete rm 
