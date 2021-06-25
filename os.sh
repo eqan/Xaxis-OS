@@ -9,4 +9,4 @@ echo $ram >> osspecs
 echo $cores >> osspecs
 echo "root" >> osspecs
 g++ runos.cpp -o Xaxis -lpthread
-taskset -c $cores ./Xaxis
+taskset -c 1-$cores ./Xaxis
