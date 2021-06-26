@@ -18,6 +18,7 @@ dict* commands;
 pthread_t last_thread_id;
 int count=0; //Commands Count
 std::vector<int>processes;
+pthread_mutex_t sync_Process_io;
 // * -------
 
 // * Function Prototypes
@@ -26,16 +27,25 @@ void readspecs();
 void readCommands();
 void* processCommand(void* args);
 void creatingProcess(char* arg);
+void writeProcesses();
+void readProcesses();
+void* keepProcessesUpdated(void* args);
 // * -------
 
 int main(){
+    pthread_mutex_init(&sync_Process_io,NULL);
     readspecs();
     readCommands();
+    writeProcesses();
+    if(pthread_create(&last_thread_id,NULL,keepProcessesUpdated,NULL)){
+        std::cout<<"Process Log Init Failed.\nShutting Down Xaxis.\n";
+        exit(0);
+    }
     while(!userLogin());
     std::cin.ignore();
     while(1){
         std::cout<<"root@root-xaxis:";
-        std::cin.ignore(-1);
+        //std::cin.ignore(-1);
         std::getline(std::cin,userin);
         if(pthread_create(&last_thread_id,NULL,processCommand,NULL)){
             std::cout<<"Thread Creation Failed, Couldn't Process Command.\n";
@@ -194,18 +204,69 @@ void creatingProcess(char* arg){
     int pid = fork();
     if(pid == 0){
         system(arg);
-        std::vector<int>::iterator forRemoval;
-        forRemoval = remove(processes.begin(),processes.end(),getpid());
-        for(int i=0;i<processes.size(); i++){
-            std::cout << processes[i] << " ";
+        readProcesses();
+
+        for(int i=0;i<processes.size();i++){
+            if(processes[i]==getpid()){
+                processes.erase(processes.begin()+i);
+                break;
+            }   
         }
+        writeProcesses();
+
         exit(0);
     }
     else{
         processes.push_back(pid);
-        for(int i=0;i<processes.size(); i++){
-            std::cout << processes[i] << " ";
-        }
+        writeProcesses();
     }
     return;
+}
+
+/*
+
+*/
+
+void writeProcesses(){
+    pthread_mutex_lock(&sync_Process_io);
+    std::ofstream writer;
+    writer.open("/home/winepine/Desktop/oslabs/finalproject/processes",std::ofstream::trunc);
+    for(int i=0;i<processes.size(); i++){
+        writer << processes[i] << std::endl;
+    }
+    writer.close();
+    pthread_mutex_unlock(&sync_Process_io);
+    return;
+}
+
+/*
+
+*/
+
+
+void readProcesses(){
+    pthread_mutex_lock(&sync_Process_io);
+    processes.clear();
+    int tmp;
+    std::ifstream reader;
+    reader.open("/home/winepine/Desktop/oslabs/finalproject/processes");
+    while(reader>>tmp){
+        processes.push_back(tmp);
+    }
+    reader.close();
+    pthread_mutex_unlock(&sync_Process_io);
+    return;
+}
+
+
+/*
+
+*/
+
+
+void* keepProcessesUpdated(void* args){
+    while(1){
+        readProcesses();
+        usleep(10000);
+    }
 }
