@@ -1,4 +1,5 @@
 goback cd ..
+plist cat /home/winepine/Desktop/oslabs/finalproject/processes
 run ./
 open cd 
 create touch 
