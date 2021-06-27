@@ -41,11 +41,11 @@ int main(){
         std::cout<<"Process Log Init Failed.\nShutting Down Xaxis.\n";
         exit(0);
     }
-    while(!userLogin());
-    std::cin.ignore();
+    //while(!userLogin());
+    //std::cin.ignore();
     while(1){
         std::cout<<"root@root-xaxis:";
-        //std::cin.ignore(-1);
+        std::cin.clear();
         std::getline(std::cin,userin);
         if(pthread_create(&last_thread_id,NULL,processCommand,NULL)){
             std::cout<<"Thread Creation Failed, Couldn't Process Command.\n";
@@ -97,7 +97,7 @@ void readCommands(){
     myFile_Handler.open("commands");
     for(int i=0;i<count;i++){
         myFile_Handler>>commands[i].key;
-        if(i==0){
+        if(i==0 || i==1){
             myFile_Handler>>commands[i].value;
             myFile_Handler>>comm_tmp;
             commands[i].value+=" ";
@@ -235,6 +235,13 @@ void writeProcesses(){
         writer << processes[i] << std::endl;
     }
     writer.close();
+    std::string req;
+    system("echo -n "" > /home/winepine/Desktop/oslabs/finalproject/processes_mem");
+    for(int i=0;i<processes.size(); i++){
+        req="/home/winepine/Desktop/oslabs/finalproject/./memusage.sh ";
+        req+=std::to_string(processes[i]);
+        system(&req[0]);
+    }
     pthread_mutex_unlock(&sync_Process_io);
     return;
 }
