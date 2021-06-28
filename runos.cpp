@@ -9,6 +9,7 @@
 #include<stdlib.h>
 #include<algorithm>
 #include<fstream>
+#include<queue>
 #include"dictionary.h" //dict
 // * Globals 
 int disk=0,memory=0,cores=0;
@@ -19,6 +20,10 @@ pthread_t last_thread_id;
 int count=0; //Commands Count
 std::vector<int>processes;
 pthread_mutex_t sync_Process_io;
+pthread_mutex_t mem_full;
+long mem_usage = 0;
+pthread_cond_t process_waiter;
+std::queue<int>p_schedule;
 // * -------
 
 // * Function Prototypes
@@ -30,29 +35,49 @@ void creatingProcess(char* arg);
 void writeProcesses();
 void readProcesses();
 void* keepProcessesUpdated(void* args);
+void tot_mem_usage();
+void* process_manager(void* args);
 // * -------
 
 int main(){
     pthread_mutex_init(&sync_Process_io,NULL);
+    pthread_mutex_init(&mem_full,NULL);
+    pthread_cond_init(&process_waiter,NULL);
     readspecs();
     readCommands();
     writeProcesses();
     if(pthread_create(&last_thread_id,NULL,keepProcessesUpdated,NULL)){
         std::cout<<"Process Log Init Failed.\nShutting Down Xaxis.\n";
-        exit(0);
+        exit(-1);
+    }
+    if(pthread_create(&last_thread_id,NULL,process_manager,NULL)){
+        std::cout<<"Process Manager Init Failed.\nShutting Down Xaxis.\n";
+        exit(-2);
     }
     //while(!userLogin());
     //std::cin.ignore();
     while(1){
-        std::cout<<"root@root-xaxis:";
+        std::cout<<"root@root-xaxis : ";
         std::cin.clear();
         std::getline(std::cin,userin);
+        if(userin == "memusage"){
+            std::cout<<"MEMORY IN USE (APPS): "<< mem_usage << " KBs"<<std::endl;
+            continue;
+        }else if(userin == "specs"){
+            std::cout<<"MEMORY : "<< memory << " KBs"<<std::endl;
+            std::cout<<"CPU Cores : "<< cores <<std::endl;
+            std::cout<<"STORAGE : "<< disk << " KBs"<<std::endl;
+            continue;
+        }    
         if(pthread_create(&last_thread_id,NULL,processCommand,NULL)){
             std::cout<<"Thread Creation Failed, Couldn't Process Command.\n";
         }
         pthread_join(last_thread_id,NULL);
-        usleep(10000);
+        usleep(20000);
     }
+    pthread_mutex_destroy(&sync_Process_io);
+    pthread_mutex_destroy(&mem_full);
+    pthread_cond_destroy(&process_waiter);
 }
 
 /*
@@ -203,9 +228,12 @@ void* processCommand(void* args){
 void creatingProcess(char* arg){
     int pid = fork();
     if(pid == 0){
+        std::string serial_killer="kill -STOP ";
+        serial_killer+=std::to_string(getpid());
+        system(&serial_killer[0]);
         system(arg);
+        std::cout<<"root@root-xaxis : ";
         readProcesses();
-
         for(int i=0;i<processes.size();i++){
             if(processes[i]==getpid()){
                 processes.erase(processes.begin()+i);
@@ -213,11 +241,11 @@ void creatingProcess(char* arg){
             }   
         }
         writeProcesses();
-
         exit(0);
     }
     else{
-        processes.push_back(pid);
+        p_schedule.push(pid);
+        //processes.push_back(pid);
         writeProcesses();
     }
     return;
@@ -251,7 +279,7 @@ void writeProcesses(){
 */
 
 
-void readProcesses(){
+void readProcesses(){ 
     pthread_mutex_lock(&sync_Process_io);
     processes.clear();
     int tmp;
@@ -274,6 +302,52 @@ void readProcesses(){
 void* keepProcessesUpdated(void* args){
     while(1){
         readProcesses();
+        tot_mem_usage();
         usleep(10000);
+    }
+}
+
+/*
+
+*/
+
+
+void tot_mem_usage(){
+    pthread_mutex_lock(&mem_full);
+    mem_usage=0;
+    std::string tmp;
+    std::ifstream reader;
+    reader.open("/home/winepine/Desktop/oslabs/finalproject/processes_mem");
+    while(reader>>tmp){
+        tmp[tmp.size()-1]='\0';
+        mem_usage+=stoi(tmp);
+    }
+    reader.close();
+    pthread_mutex_unlock(&mem_full);
+    int mem_avail = memory/10;
+    mem_avail *= 7;
+    if(mem_usage<mem_avail){
+        pthread_cond_signal(&process_waiter);   
+    }
+}
+
+/*
+
+*/
+
+void* process_manager(void* args){
+    while(1){
+        pthread_mutex_lock(&mem_full);
+        pthread_cond_wait(&process_waiter,&mem_full);
+        if(p_schedule.size()){
+            int r = p_schedule.front();
+            processes.push_back(r);
+            writeProcesses();
+            p_schedule.pop();
+            std::string reviver = "kill -CONT ";
+            reviver += std::to_string(r);
+            system(&reviver[0]);
+        }
+        pthread_mutex_unlock(&mem_full);
     }
 }
