@@ -19,6 +19,7 @@ pthread_t last_thread_id;
 int count=0; //Commands Count
 std::vector<int>processes;
 pthread_mutex_t sync_Process_io;
+long mem_usage = 0;
 // * -------
 
 // * Function Prototypes
@@ -30,6 +31,7 @@ void creatingProcess(char* arg);
 void writeProcesses();
 void readProcesses();
 void* keepProcessesUpdated(void* args);
+void tot_mem_usage();
 // * -------
 
 int main(){
@@ -44,9 +46,13 @@ int main(){
     //while(!userLogin());
     //std::cin.ignore();
     while(1){
-        std::cout<<"root@root-xaxis:";
+        std::cout<<"root@root-xaxis : ";
         std::cin.clear();
         std::getline(std::cin,userin);
+        if(userin == "memusage"){
+            std::cout<<"MEMORY IN USE : "<< mem_usage << " KBs"<<std::endl;
+            continue;
+        }    
         if(pthread_create(&last_thread_id,NULL,processCommand,NULL)){
             std::cout<<"Thread Creation Failed, Couldn't Process Command.\n";
         }
@@ -205,7 +211,6 @@ void creatingProcess(char* arg){
     if(pid == 0){
         system(arg);
         readProcesses();
-
         for(int i=0;i<processes.size();i++){
             if(processes[i]==getpid()){
                 processes.erase(processes.begin()+i);
@@ -213,7 +218,6 @@ void creatingProcess(char* arg){
             }   
         }
         writeProcesses();
-
         exit(0);
     }
     else{
@@ -251,7 +255,7 @@ void writeProcesses(){
 */
 
 
-void readProcesses(){
+void readProcesses(){ 
     pthread_mutex_lock(&sync_Process_io);
     processes.clear();
     int tmp;
@@ -274,6 +278,24 @@ void readProcesses(){
 void* keepProcessesUpdated(void* args){
     while(1){
         readProcesses();
+        tot_mem_usage();
         usleep(10000);
     }
+}
+
+/*
+
+*/
+
+
+void tot_mem_usage(){
+    mem_usage=0;
+    std::string tmp;
+    std::ifstream reader;
+    reader.open("/home/winepine/Desktop/oslabs/finalproject/processes_mem");
+    while(reader>>tmp){
+        tmp[tmp.size()-1]='\0';
+        mem_usage+=stoi(tmp);
+    }
+    reader.close();
 }
