@@ -37,9 +37,11 @@ void readProcesses();
 void* keepProcessesUpdated(void* args);
 void tot_mem_usage();
 void* process_manager(void* args);
+void manualinput();
 // * -------
 
 int main(){
+    // -- OS INITIALIZATIONS
     pthread_mutex_init(&sync_Process_io,NULL);
     pthread_mutex_init(&mem_full,NULL);
     pthread_cond_init(&process_waiter,NULL);
@@ -54,6 +56,24 @@ int main(){
         std::cout<<"Process Manager Init Failed.\nShutting Down Xaxis.\n";
         exit(-2);
     }
+    
+    
+    // -- IDR SE APNA START KR
+
+
+
+    
+    // -- Destroying
+    pthread_mutex_destroy(&sync_Process_io);
+    pthread_mutex_destroy(&mem_full);
+    pthread_cond_destroy(&process_waiter);
+}
+
+/*
+
+*/
+
+void manualinput(){
     //while(!userLogin());
     //std::cin.ignore();
     while(1){
@@ -75,9 +95,6 @@ int main(){
         pthread_join(last_thread_id,NULL);
         usleep(20000);
     }
-    pthread_mutex_destroy(&sync_Process_io);
-    pthread_mutex_destroy(&mem_full);
-    pthread_cond_destroy(&process_waiter);
 }
 
 /*
