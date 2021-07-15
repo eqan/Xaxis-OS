@@ -17,9 +17,14 @@ GtkWidget* Linux_Button;
 GtkWidget* Clock_Widget;
 GtkWidget* Battery_Widget;
 GtkWidget* Dock;
+GtkWidget* Hangman_Picture;
+GtkWidget* Graph_Picture;
+GtkWidget* NotePad_Picture;
+GtkWidget* Terminal_Picture;
 GtkWidget* Hangman_Button;
 GtkWidget* Graph_Button;
 GtkWidget* NotePad_Button;
+GtkWidget* Terminal_Button;
 GtkBuilder* builder;
 char *current_time;
 char *current_battery;
@@ -74,20 +79,19 @@ void update_battery()
     current_battery = filter_integers_from_string(current_battery);
     printf("%s",current_battery);
 }
-
-void hangman_pressed (GTK_WIDGET *button, gpointer user_data)
+void hangman_pressed (GtkButton *button, gpointer user_data)
 {
 }
 
-void graph_pressed (GTK_WIDGET *button, gpointer user_data)
+void graph_pressed (GtkButton *button, gpointer user_data)
 {
 }
 
-void notepad_pressed (GTK_WIDGET *button, gpointer user_data)
+void notepad_pressed (GtkButton *button, gpointer user_data)
 {
 }
 
-void terminal_pressed (GTK_WIDGET *button, gpointer user_data)
+void terminal_pressed (GtkButton *button, gpointer user_data)
 {
 }
 
@@ -107,15 +111,19 @@ int main(int argc, char *argv[])
 	Clock_Widget = GTK_WIDGET(gtk_builder_get_object(builder, "Clock_Widget"));
 	Battery_Widget = GTK_WIDGET(gtk_builder_get_object(builder, "Battery_Widget"));
 	Dock = GTK_WIDGET(gtk_builder_get_object(builder, "Dock"));
+	Hangman_Picture = GTK_WIDGET(gtk_builder_get_object(builder, "Hangman_Picture"));
+	Graph_Picture = GTK_WIDGET(gtk_builder_get_object(builder, "Graph_Picture"));
+	NotePad_Picture = GTK_WIDGET(gtk_builder_get_object(builder, "NotePad_Picture"));
+	Terminal_Picture = GTK_WIDGET(gtk_builder_get_object(builder, "Terminal_Picture"));
 	Hangman_Button = GTK_WIDGET(gtk_builder_get_object(builder, "Hangman_Button"));
 	Graph_Button = GTK_WIDGET(gtk_builder_get_object(builder, "Graph_Button"));
 	NotePad_Button = GTK_WIDGET(gtk_builder_get_object(builder, "NotePad_Button"));
+	Terminal_Button = GTK_WIDGET(gtk_builder_get_object(builder, "Terminal_Button"));
   update_time();
-  update_battery();
-  g_signal_connect(G_OBJECT(Hangman_Button), "button-press-event",G_CALLBACK(hangman_pressed),NULL);
-  g_signal_connect(G_OBJECT(Hangman_Button), "button-press-event",G_CALLBACK(graph_pressed),NULL);
-  g_signal_connect(G_OBJECT(Hangman_Button), "button-press-event",G_CALLBACK(notepad_pressed),NULL);
-  g_signal_connect(G_OBJECT(Hangman_Button), "button-press-event",G_CALLBACK(terminal_pressed),NULL);
+  g_signal_connect(G_OBJECT(Hangman_Button), "clicked",G_CALLBACK(hangman_pressed),NULL);
+  g_signal_connect(G_OBJECT(Graph_Button), "clicked",G_CALLBACK(graph_pressed),NULL);
+  g_signal_connect(G_OBJECT(NotePad_Button), "clicked",G_CALLBACK(notepad_pressed),NULL);
+  g_signal_connect(G_OBJECT(Terminal_Button), "clicked",G_CALLBACK(terminal_pressed),NULL);
 	g_object_unref(builder);
 	gtk_widget_show(GTK_Window);
 

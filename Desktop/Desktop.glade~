@@ -87,55 +87,112 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
-              <object class="GtkImage" id="HangMan_Button">
-                <property name="name">hangman_button</property>
-                <property name="width-request">100</property>
-                <property name="height-request">80</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="pixbuf">Sub Applications/Application Icons/hang.png</property>
-                <signal name="button-press-event" handler="hangman_pressed" swapped="no"/>
-              </object>
-              <packing>
-                <property name="x">250</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="Graph_Button">
+              <object class="GtkImage" id="Graph_Picture">
                 <property name="name">graph_button</property>
                 <property name="width-request">100</property>
                 <property name="height-request">80</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="pixbuf">Sub Applications/Application Icons/graph.png</property>
-                <signal name="button-press-event" handler="graph_pressed" swapped="no"/>
               </object>
               <packing>
                 <property name="x">350</property>
               </packing>
             </child>
             <child>
-              <object class="GtkImage" id="NotePad_Button">
+              <object class="GtkImage" id="NotePad_Picture">
                 <property name="name">notepad_button</property>
                 <property name="width-request">100</property>
                 <property name="height-request">80</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="pixbuf">Sub Applications/Application Icons/text-editor.png</property>
-                <signal name="button-press-event" handler="notepad_pressed" swapped="no"/>
               </object>
               <packing>
                 <property name="x">450</property>
               </packing>
             </child>
             <child>
-              <object class="GtkImage" id="teminal_button">
+              <object class="GtkImage" id="Terminal_Picture">
                 <property name="name">terminal_button</property>
                 <property name="width-request">100</property>
                 <property name="height-request">80</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="pixbuf">Sub Applications/Application Icons/terminal.png</property>
+              </object>
+              <packing>
+                <property name="x">550</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="HangMan_Picture">
+                <property name="name">hangman_button</property>
+                <property name="width-request">100</property>
+                <property name="height-request">80</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="pixbuf">Sub Applications/Application Icons/hang.png</property>
+              </object>
+              <packing>
+                <property name="x">250</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="HangMan_Button">
+                <property name="width-request">100</property>
+                <property name="height-request">80</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="opacity">0</property>
+                <signal name="clicked" handler="hangman_pressed" swapped="no"/>
+              </object>
+              <packing>
+                <property name="x">250</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="Graph_Button">
+                <property name="width-request">100</property>
+                <property name="height-request">80</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="opacity">0</property>
+                <signal name="clicked" handler="graph_pressed" swapped="no"/>
+              </object>
+              <packing>
+                <property name="x">350</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="NotePad_Button">
+                <property name="label" translatable="yes">
+</property>
+                <property name="width-request">100</property>
+                <property name="height-request">80</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="opacity">0</property>
+                <signal name="clicked" handler="notepad_pressed" swapped="no"/>
+              </object>
+              <packing>
+                <property name="x">450</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="Terminal_Button">
+                <property name="label" translatable="yes">
+</property>
+                <property name="width-request">100</property>
+                <property name="height-request">80</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="opacity">0</property>
+                <signal name="clicked" handler="terminal_pressed" swapped="no"/>
               </object>
               <packing>
                 <property name="x">550</property>
