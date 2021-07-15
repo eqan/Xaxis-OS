@@ -70,7 +70,7 @@
                 <property name="height-request">25</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">Widgets/Wifi/icons/wifi.png</property>
+                <property name="pixbuf">Widgets/Battery/icons/battery.png</property>
               </object>
               <packing>
                 <property name="x">750</property>

@@ -21,6 +21,25 @@ GtkWidget* Hangman_Button;
 GtkWidget* Graph_Button;
 GtkWidget* NotePad_Button;
 GtkBuilder* builder;
+char *current_time;
+
+char* exec(const char* cmd)
+{
+    FILE *fp;
+    char result[1000];
+    fp=popen(cmd, "r");
+    fgets(result,sizeof(result),fp);
+    char* result2 = result;
+    return strdup(result2);
+}
+
+void update_time()
+{
+  current_time = malloc(1000);
+  current_time = exec("date +%r");
+  printf("%s",current_time);
+  gtk_label_set_text(GTK_LABEL(Clock_Widget), current_time);
+}
 
 void cancel_clicked (GtkButton *button, gpointer user_data){
 	gtk_main_quit();
@@ -45,6 +64,7 @@ int main(int argc, char *argv[]) {
 	Hangman_Button = GTK_WIDGET(gtk_builder_get_object(builder, "Hangman_Button"));
 	Graph_Button = GTK_WIDGET(gtk_builder_get_object(builder, "Graph_Button"));
 	NotePad_Button = GTK_WIDGET(gtk_builder_get_object(builder, "NotePad_Button"));
+  update_time();
     //g_signal_connect(G_OBJECT(cancel), "clicked",G_CALLBACK(cancel_clicked),NULL);
 	g_object_unref(builder);
 	gtk_widget_show(GTK_Window);

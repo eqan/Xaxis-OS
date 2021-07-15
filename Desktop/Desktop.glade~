@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
-  <object class="GtkWindow" id="main_window">
+  <object class="GtkWindow" id="GTK_Window">
     <property name="can-focus">False</property>
     <property name="resizable">False</property>
     <property name="window-position">center</property>
@@ -53,8 +53,7 @@
                 <property name="height-request">3</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">12:50:25 PM
-</property>
+                <property name="label" translatable="yes">12:50:25 PM</property>
                 <attributes>
                   <attribute name="font-desc" value="Roboto Bold 10"/>
                 </attributes>
@@ -124,6 +123,19 @@
               </object>
               <packing>
                 <property name="x">450</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="teminal_button">
+                <property name="name">terminal_button</property>
+                <property name="width-request">100</property>
+                <property name="height-request">80</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="pixbuf">Sub Applications/Application Icons/terminal.png</property>
+              </object>
+              <packing>
+                <property name="x">550</property>
               </packing>
             </child>
           </object>
