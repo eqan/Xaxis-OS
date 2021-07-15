@@ -26,7 +26,7 @@ G_MODULE_EXPORT void cancel_clicked (GtkButton *button, gpointer user_data){
 int main(int argc, char *argv[]) {
 	gtk_init(&argc, &argv);
 	builder = gtk_builder_new_from_file ("texteditor.glade");
-	window = GTK_WIDGET(gtk_builder_get_object(builder, "windo"));
+	window = GTK_WIDGET(gtk_builder_get_object(builder, "window"));
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     gtk_builder_connect_signals(builder, NULL);
