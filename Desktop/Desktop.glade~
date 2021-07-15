@@ -10,57 +10,126 @@
     <property name="default-height">281</property>
     <property name="decorated">False</property>
     <child>
-      <object class="GtkFixed" id="fixed_container">
+      <object class="GtkFixed" id="Main Window">
+        <property name="name">fixed_container</property>
         <property name="width-request">800</property>
         <property name="height-request">281</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <child>
-          <object class="GtkImage">
+          <object class="GtkImage" id="Back Ground Wall Paper">
+            <property name="name">wallpaper</property>
             <property name="width-request">100</property>
             <property name="height-request">80</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="pixbuf">wallpaper.png</property>
+            <property name="pixbuf">Theme/wallpaper.png</property>
           </object>
         </child>
         <child>
-          <object class="GtkFixed">
+          <object class="GtkFixed" id="Top Bar">
+            <property name="name">topbar</property>
             <property name="width-request">800</property>
             <property name="height-request">32</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
-              <object class="GtkImage">
+              <object class="GtkImage" id="Linux Icon">
+                <property name="name">linux_button</property>
                 <property name="width-request">50</property>
                 <property name="height-request">25</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">linux.png</property>
+                <property name="pixbuf">Theme/linux.png</property>
               </object>
               <packing>
                 <property name="y">5</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
-                <property name="width-request">100</property>
-                <property name="height-request">10</property>
+              <object class="GtkLabel" id="Clock Widget">
+                <property name="name">clock_label</property>
+                <property name="width-request">50</property>
+                <property name="height-request">3</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">12:50:25 PM
 </property>
-                <property name="yalign">0.40000000596046448</property>
                 <attributes>
-                  <attribute name="font-desc" value="Roboto Condensed, Bold 10"/>
+                  <attribute name="font-desc" value="Roboto Bold 10"/>
                 </attributes>
               </object>
               <packing>
                 <property name="x">400</property>
-                <property name="y">10</property>
+                <property name="y">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="Wifi Widget">
+                <property name="name">wifi_icon</property>
+                <property name="width-request">50</property>
+                <property name="height-request">25</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="pixbuf">Widgets/Wifi/icons/wifi.png</property>
+              </object>
+              <packing>
+                <property name="x">750</property>
+                <property name="y">5</property>
               </packing>
             </child>
           </object>
+        </child>
+        <child>
+          <object class="GtkFixed" id="Dock">
+            <property name="name">dock</property>
+            <property name="width-request">800</property>
+            <property name="height-request">80</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkImage" id="HangMan">
+                <property name="name">hangman_button</property>
+                <property name="width-request">100</property>
+                <property name="height-request">80</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="pixbuf">Sub Applications/Application Icons/hang.png</property>
+              </object>
+              <packing>
+                <property name="x">250</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="Graph">
+                <property name="name">graph_button</property>
+                <property name="width-request">100</property>
+                <property name="height-request">80</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="pixbuf">Sub Applications/Application Icons/graph.png</property>
+              </object>
+              <packing>
+                <property name="x">350</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="Note Pad">
+                <property name="name">notepad_button</property>
+                <property name="width-request">100</property>
+                <property name="height-request">80</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="pixbuf">Sub Applications/Application Icons/text-editor.png</property>
+              </object>
+              <packing>
+                <property name="x">450</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="y">366</property>
+          </packing>
         </child>
       </object>
     </child>
