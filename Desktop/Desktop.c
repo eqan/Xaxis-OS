@@ -81,18 +81,22 @@ void update_battery()
 }
 void hangman_pressed (GtkButton *button, gpointer user_data)
 {
+	exec("cd ~/Desktop/Xaxis-OS/Desktop/Sub-Applications/Hangman-In-Shell/ && ./game.sh && cd -");
 }
 
 void graph_pressed (GtkButton *button, gpointer user_data)
 {
+	exec("alacritty -e 'cd ~/Desktop/Xaxis-OS/Desktop/Sub-Applications/Graphs/ && ./Graph.o'");
 }
 
 void notepad_pressed (GtkButton *button, gpointer user_data)
 {
+	exec("cd ~/Desktop/Xaxis-OS/Desktop/Sub-Applications/Text-Editor/ && ./texteditor");
 }
 
 void terminal_pressed (GtkButton *button, gpointer user_data)
 {
+	exec("alacritty");
 }
 
 int main(int argc, char *argv[])

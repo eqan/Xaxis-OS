@@ -93,7 +93,7 @@
                 <property name="height-request">80</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">Sub Applications/Application Icons/graph.png</property>
+                <property name="pixbuf">Sub-Applications/Application Icons/graph.png</property>
               </object>
               <packing>
                 <property name="x">350</property>
@@ -106,7 +106,7 @@
                 <property name="height-request">80</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">Sub Applications/Application Icons/text-editor.png</property>
+                <property name="pixbuf">Sub-Applications/Application Icons/text-editor.png</property>
               </object>
               <packing>
                 <property name="x">450</property>
@@ -119,7 +119,7 @@
                 <property name="height-request">80</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">Sub Applications/Application Icons/terminal.png</property>
+                <property name="pixbuf">Sub-Applications/Application Icons/terminal.png</property>
               </object>
               <packing>
                 <property name="x">550</property>
@@ -132,7 +132,7 @@
                 <property name="height-request">80</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">Sub Applications/Application Icons/hang.png</property>
+                <property name="pixbuf">Sub-Applications/Application Icons/hang.png</property>
               </object>
               <packing>
                 <property name="x">250</property>
