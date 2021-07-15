@@ -1,0 +1,3 @@
+Basit -> 45
+Eqan-> 90
+3rd person -> 45
