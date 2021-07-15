@@ -8,3 +8,4 @@ delete rm
 delfolder rmdir 
 clear clear
 list ls
+systeminfo ./systeminfo
