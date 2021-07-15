@@ -70,7 +70,7 @@
                 <property name="height-request">25</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">Widgets/Wifi/icons/wifi.png</property>
+                <property name="pixbuf">Widgets/Battery/icons/battery.png</property>
               </object>
               <packing>
                 <property name="x">750</property>
@@ -94,6 +94,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="pixbuf">Sub Applications/Application Icons/hang.png</property>
+                <signal name="button-press-event" handler="hangman_pressed" swapped="no"/>
               </object>
               <packing>
                 <property name="x">250</property>
@@ -107,6 +108,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="pixbuf">Sub Applications/Application Icons/graph.png</property>
+                <signal name="button-press-event" handler="graph_pressed" swapped="no"/>
               </object>
               <packing>
                 <property name="x">350</property>
@@ -120,6 +122,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="pixbuf">Sub Applications/Application Icons/text-editor.png</property>
+                <signal name="button-press-event" handler="notepad_pressed" swapped="no"/>
               </object>
               <packing>
                 <property name="x">450</property>
@@ -133,6 +136,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="pixbuf">Sub Applications/Application Icons/terminal.png</property>
+                <signal name="button-press-event" handler="terminal_pressed" swapped="no"/>
               </object>
               <packing>
                 <property name="x">550</property>

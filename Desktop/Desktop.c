@@ -15,13 +15,14 @@ GtkWidget* Back_Ground_Wall_Paper;
 GtkWidget* Top_Bar;
 GtkWidget* Linux_Button;
 GtkWidget* Clock_Widget;
-GtkWidget* Wifi_Widget;
+GtkWidget* Battery_Widget;
 GtkWidget* Dock;
 GtkWidget* Hangman_Button;
 GtkWidget* Graph_Button;
 GtkWidget* NotePad_Button;
 GtkBuilder* builder;
 char *current_time;
+char *current_battery;
 
 char* exec(const char* cmd)
 {
@@ -29,6 +30,7 @@ char* exec(const char* cmd)
     char result[1000];
     fp=popen(cmd, "r");
     fgets(result,sizeof(result),fp);
+    pclose(fp);
     char* result2 = result;
     return strdup(result2);
 }
@@ -41,12 +43,56 @@ void update_time()
   gtk_label_set_text(GTK_LABEL(Clock_Widget), current_time);
 }
 
-void cancel_clicked (GtkButton *button, gpointer user_data){
-	gtk_main_quit();
-	exit(0);
+char* filter_integers_from_string(char *ptr)
+{
+    char result[3];
+    int i=0;
+    while (*ptr)
+    {
+        if (isdigit(*ptr))
+        {
+            result[i] = *ptr;
+            i++;
+        }
+        else
+            ptr++;
+    }
+    char* result2 = result;
+    return strdup(result2);
 }
 
-int main(int argc, char *argv[]) {
+void set_battery_image(char* icon_name)
+{
+     gtk_image_set_from_file(GTK_IMAGE(Battery_Widget), icon_name);
+}
+
+void update_battery()
+{
+    current_battery = malloc(3);
+    current_battery = exec("upower -i /org/freedesktop/UPower/devices/battery_BAT0| grep -E 'percentage'");
+    printf("%s",current_battery);
+    current_battery = filter_integers_from_string(current_battery);
+    printf("%s",current_battery);
+}
+
+void hangman_pressed (GTK_WIDGET *button, gpointer user_data)
+{
+}
+
+void graph_pressed (GTK_WIDGET *button, gpointer user_data)
+{
+}
+
+void notepad_pressed (GTK_WIDGET *button, gpointer user_data)
+{
+}
+
+void terminal_pressed (GTK_WIDGET *button, gpointer user_data)
+{
+}
+
+int main(int argc, char *argv[])
+{
 	gtk_init(&argc, &argv);
 	builder = gtk_builder_new_from_file ("Desktop.glade");
 	GTK_Window = GTK_WIDGET(gtk_builder_get_object(builder, "GTK_Window"));
@@ -59,13 +105,17 @@ int main(int argc, char *argv[]) {
 	Top_Bar = GTK_WIDGET(gtk_builder_get_object(builder, "Top_Bar"));
 	Linux_Button = GTK_WIDGET(gtk_builder_get_object(builder, "Linux_Button"));
 	Clock_Widget = GTK_WIDGET(gtk_builder_get_object(builder, "Clock_Widget"));
-	Wifi_Widget = GTK_WIDGET(gtk_builder_get_object(builder, "Wifi_Widget"));
+	Battery_Widget = GTK_WIDGET(gtk_builder_get_object(builder, "Battery_Widget"));
 	Dock = GTK_WIDGET(gtk_builder_get_object(builder, "Dock"));
 	Hangman_Button = GTK_WIDGET(gtk_builder_get_object(builder, "Hangman_Button"));
 	Graph_Button = GTK_WIDGET(gtk_builder_get_object(builder, "Graph_Button"));
 	NotePad_Button = GTK_WIDGET(gtk_builder_get_object(builder, "NotePad_Button"));
   update_time();
-    //g_signal_connect(G_OBJECT(cancel), "clicked",G_CALLBACK(cancel_clicked),NULL);
+  update_battery();
+  g_signal_connect(G_OBJECT(Hangman_Button), "button-press-event",G_CALLBACK(hangman_pressed),NULL);
+  g_signal_connect(G_OBJECT(Hangman_Button), "button-press-event",G_CALLBACK(graph_pressed),NULL);
+  g_signal_connect(G_OBJECT(Hangman_Button), "button-press-event",G_CALLBACK(notepad_pressed),NULL);
+  g_signal_connect(G_OBJECT(Hangman_Button), "button-press-event",G_CALLBACK(terminal_pressed),NULL);
 	g_object_unref(builder);
 	gtk_widget_show(GTK_Window);
 
