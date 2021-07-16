@@ -1,5 +1,5 @@
 goback cd ..
-plist cat ~/Desktop/os/processes
+plist cat ~/Desktop/Xaxis-OS/processes
 run ./
 open cd 
 create touch 
