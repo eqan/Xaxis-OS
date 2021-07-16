@@ -84,7 +84,7 @@ void update_battery()
 }
 void hangman_pressed (GtkButton *button, gpointer user_data)
 {
-	exec("cd ~/Desktop/os/Desktop/Sub-Applications/Hangman-In-Shell/ && ./game.sh && cd -");
+	exec("cd ~/Desktop/Xaxis-OS/Desktop/Sub-Applications/Hangman-In-Shell/ && ./game.sh && cd -");
 }
 
 void graph_pressed (GtkButton *button, gpointer user_data)
@@ -94,7 +94,7 @@ void graph_pressed (GtkButton *button, gpointer user_data)
 
 void notepad_pressed (GtkButton *button, gpointer user_data)
 {
-	exec("cd ~/Desktop/os/Desktop/Sub-Applications/Text-Editor/ && ./texteditor");
+	exec("cd ~/Desktop/Xaxis-OS/Desktop/Sub-Applications/Text-Editor/ && ./texteditor");
 }
 
 void terminal_pressed (GtkButton *button, gpointer user_data)
