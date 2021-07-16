@@ -8,6 +8,7 @@
 #include <gtk/gtkx.h>
 #include <math.h>
 #include <ctype.h>
+#include<pthread.h>
 
 GtkWidget* GTK_Window;
 GtkWidget* Main_Window;
@@ -40,12 +41,14 @@ char* exec(const char* cmd)
     return strdup(result2);
 }
 
-void update_time()
+void* update_time(void*args)
 {
+  while(1){
   current_time = malloc(1000);
   current_time = exec("date +%r");
-  printf("%s",current_time);
   gtk_label_set_text(GTK_LABEL(Clock_Widget), current_time);
+  sleep(1);
+  }
 }
 
 char* filter_integers_from_string(char *ptr)
@@ -81,22 +84,22 @@ void update_battery()
 }
 void hangman_pressed (GtkButton *button, gpointer user_data)
 {
-	exec("cd ~/Desktop/Xaxis-OS/Desktop/Sub-Applications/Hangman-In-Shell/ && ./game.sh && cd -");
+	exec("cd ~/Desktop/os/Desktop/Sub-Applications/Hangman-In-Shell/ && ./game.sh && cd -");
 }
 
 void graph_pressed (GtkButton *button, gpointer user_data)
 {
-	exec("alacritty -e 'cd ~/Desktop/Xaxis-OS/Desktop/Sub-Applications/Graphs/ && ./Graph.o'");
+	exec("alacritty -e './Graph.o'");
 }
 
 void notepad_pressed (GtkButton *button, gpointer user_data)
 {
-	exec("cd ~/Desktop/Xaxis-OS/Desktop/Sub-Applications/Text-Editor/ && ./texteditor");
+	exec("cd ~/Desktop/os/Desktop/Sub-Applications/Text-Editor/ && ./texteditor");
 }
 
 void terminal_pressed (GtkButton *button, gpointer user_data)
 {
-	exec("alacritty");
+	exec("alacritty -e '../Xaxis'");
 }
 
 int main(int argc, char *argv[])
@@ -123,7 +126,6 @@ int main(int argc, char *argv[])
 	Graph_Button = GTK_WIDGET(gtk_builder_get_object(builder, "Graph_Button"));
 	NotePad_Button = GTK_WIDGET(gtk_builder_get_object(builder, "NotePad_Button"));
 	Terminal_Button = GTK_WIDGET(gtk_builder_get_object(builder, "Terminal_Button"));
-  update_time();
   g_signal_connect(G_OBJECT(Hangman_Button), "clicked",G_CALLBACK(hangman_pressed),NULL);
   g_signal_connect(G_OBJECT(Graph_Button), "clicked",G_CALLBACK(graph_pressed),NULL);
   g_signal_connect(G_OBJECT(NotePad_Button), "clicked",G_CALLBACK(notepad_pressed),NULL);
@@ -131,6 +133,8 @@ int main(int argc, char *argv[])
 	g_object_unref(builder);
 	gtk_widget_show(GTK_Window);
 
+  pthread_t id;
+  pthread_create(&id,NULL,update_time,NULL);
 	gtk_main();
 
 	return EXIT_SUCCESS;

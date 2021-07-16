@@ -42,6 +42,7 @@ void manualinput();
 
 int main(){
     // -- OS INITIALIZATIONS
+    chdir("..");
     pthread_mutex_init(&sync_Process_io,NULL);
     pthread_mutex_init(&mem_full,NULL);
     pthread_cond_init(&process_waiter,NULL);
@@ -59,7 +60,8 @@ int main(){
     
     
     // -- IDR SE APNA START KR
-
+   
+    manualinput();
 
 
     
@@ -275,15 +277,15 @@ void creatingProcess(char* arg){
 void writeProcesses(){
     pthread_mutex_lock(&sync_Process_io);
     std::ofstream writer;
-    writer.open("/home/winepine/Desktop/oslabs/finalproject/processes",std::ofstream::trunc);
+    writer.open("~/Desktop/os/processes",std::ofstream::trunc);
     for(int i=0;i<processes.size(); i++){
         writer << processes[i] << std::endl;
     }
     writer.close();
     std::string req;
-    system("echo -n "" > /home/winepine/Desktop/oslabs/finalproject/processes_mem");
+    system("echo -n "" > ~/Desktop/os/processes_mem");
     for(int i=0;i<processes.size(); i++){
-        req="/home/winepine/Desktop/oslabs/finalproject/./memusage.sh ";
+        req="~/Desktop/os/./memusage.sh ";
         req+=std::to_string(processes[i]);
         system(&req[0]);
     }
@@ -301,7 +303,7 @@ void readProcesses(){
     processes.clear();
     int tmp;
     std::ifstream reader;
-    reader.open("/home/winepine/Desktop/oslabs/finalproject/processes");
+    reader.open("~/Desktop/os/processes");
     while(reader>>tmp){
         processes.push_back(tmp);
     }
@@ -334,7 +336,7 @@ void tot_mem_usage(){
     mem_usage=0;
     std::string tmp;
     std::ifstream reader;
-    reader.open("/home/winepine/Desktop/oslabs/finalproject/processes_mem");
+    reader.open("~/Desktop/os/processes_mem");
     while(reader>>tmp){
         tmp[tmp.size()-1]='\0';
         mem_usage+=stoi(tmp);

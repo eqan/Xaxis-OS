@@ -1,5 +1,5 @@
 goback cd ..
-plist cat /home/winepine/Desktop/oslabs/finalproject/processes
+plist cat ~/Desktop/os/processes
 run ./
 open cd 
 create touch 
@@ -8,4 +8,8 @@ delete rm
 delfolder rmdir 
 clear clear
 list ls
+move mv
 systeminfo ./systeminfo
+copy cp
+date date
+show cat
