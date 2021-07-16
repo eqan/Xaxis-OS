@@ -1,2 +1,5 @@
 # Xaxis OS
-./os.sh ram disk cores
+
+|  Main Window  |
+| :-----------: |
+| ![](main.png) |
